@@ -57,7 +57,11 @@ const Auth = () => {
           value={password}
           onChange={onChange}
         />
+<<<<<<< HEAD
         <input type="submit" value={newAccount ? "Create Account" : "Log in"} />
+=======
+        <input type="submit" value="Log in" />
+>>>>>>> dc5152866185b0801076c032654c61a7441870d0
       </form>
       <div>
         <button>Continue with Google</button>
