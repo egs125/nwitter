@@ -7,9 +7,6 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    // if (!init) {
-
-    // }
     authService.onAuthStateChanged((user) => {
       if (user) {
         setIsLoggedIn(true);
