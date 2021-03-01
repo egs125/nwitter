@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { dbService } from "fBase";
 
-const Home = () => {
+const Home = ({ userObj }) => {
   const [nweet, setNweet] = useState("");
   const [nweets, setNweets] = useState([]);
 
+  /*
   const getNweets = async () => {
     const dbNweets = await dbService.collection('nweets').get();
     const tempArray = [];
@@ -20,17 +21,24 @@ const Home = () => {
 
     setNweets(tempArray);
   };
+  */
 
   useEffect(() => {
-    getNweets();
+    // for realtime update, removing getNweets
+    // getNweets();
+    dbService.collection('nweets').onSnapshot(snapShot => {
+        const nweetArray = snapShot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        setNweets(nweetArray);
+    });
   }, []);
 
   const onSubmit = async (e) => {
     e.preventDefault();
 
     await dbService.collection("nweets").add({
-      nweet: nweet,
+      text: nweet,
       createdAt: Date.now(),
+      creatorId: userObj.uid,
     });
 
     setNweet("");
@@ -58,7 +66,7 @@ const Home = () => {
       </form>
 
       <div>
-        {nweets.map(nweet => <div key={nweet.id}><h4>{nweet.nweet}</h4></div>)}
+        {nweets.map(nweet => <div key={nweet.id}><h4>{nweet.text}</h4></div>)}
       </div>
     </div>
   );
